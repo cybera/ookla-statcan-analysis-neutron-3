@@ -10,6 +10,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
+@st.cache_data
+@st.spinner('Waiting for the loading to finish...') 
+def loadData(path):
+    data = gpd.read_file(path)
+    return data
+data = loadData('data/model_data/output.geojson')
 # Add a title
 st.title("Top and Bottom 50 Regions based on Avg Download Speed")
 
@@ -36,9 +42,10 @@ st.write('By visualizing the top and bottom 50 regions based on average download
 sel_column = st.selectbox('Select a Province',('NL','NS','NB','QC','ON','SK','AB','BC','MB','PE','YT','NT','NU'))
 
 
+
 def calculate_top_bottom_50(selected_column):
     #reading the geopandas dataframe
-    data = gpd.read_file('notebooks//output.geojson')
+    
     sd_df2 = data.dropna()
     filtered_data = sd_df2[sd_df2['PRCODE'] == selected_column]
     mean_pop2016 = filtered_data['Pop2016'].mean()
@@ -61,5 +68,6 @@ def calculate_top_bottom_50(selected_column):
             'Pop_Avail_50_10','ookla_50_10_percentile','Down_50_percentile','Up_10_percentile']
         )
     return map
+
 map2 = calculate_top_bottom_50(sel_column)
 st_folium(map2, key="main-map", returned_objects=[], height=800, width=700)

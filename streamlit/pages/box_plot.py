@@ -35,7 +35,7 @@ def load_database_file(df_type:str, base_path: str, file_name:str):
 
 
 
-path_to_files = "data/"
+path_to_files = "data/model_data/"
 features_table = load_database_file(df_type="gp", base_path=path_to_files, file_name="features_table.gpkg")
 
 
